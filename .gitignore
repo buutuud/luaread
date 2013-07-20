@@ -1,0 +1,8 @@
+doc/
+*.o
+*.a
+*.so
+*.out
+^lua$
+^luac$
+
