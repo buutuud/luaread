@@ -623,6 +623,11 @@ static int skipcomment (LoadF *lf, int *cp) {
   else return 0;  /* no comment */
 }
 
+//typedef struct LoadF {
+//  int n;  /* number of pre-read characters */
+//  FILE *f;  /* file being read */
+//  char buff[LUAL_BUFFERSIZE];  /* area for reading file */
+//} LoadF;
 
 LUALIB_API int luaL_loadfilex (lua_State *L, const char *filename,
                                              const char *mode) {
@@ -913,7 +918,9 @@ LUALIB_API const char *luaL_gsub (lua_State *L, const char *s, const char *p,
   return lua_tostring(L, -1);
 }
 
-
+/*
+ *  create @nsize mem start with @ptr 
+ */
 static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud; (void)osize;  /* not used */
   if (nsize == 0) {
@@ -925,6 +932,9 @@ static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
 }
 
 
+/*
+ * normal panic function
+ */
 static int panic (lua_State *L) {
   luai_writestringerror("PANIC: unprotected error in call to Lua API (%s)\n",
                    lua_tostring(L, -1));

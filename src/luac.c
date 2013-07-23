@@ -276,6 +276,7 @@ static void PrintConstant(const Proto* f, int i)
 
 static void PrintCode(const Proto* f)
 {
+ printf("printcode start");
  const Instruction* code=f->code;
  int pc,n=f->sizecode;
  for (pc=0; pc<n; pc++)

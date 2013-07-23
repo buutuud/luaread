@@ -43,6 +43,13 @@ const char lua_ident[] =
 #define api_checkvalidindex(L, i)  api_check(L, isvalid(i), "invalid index")
 
 
+/*
+ * return @o #object at idx of L#
+ * %warning% you should know well about lua_State stack
+ * @MAXUPVAL = @UCHAR_MAX = 255  #from limits.h#
+ * @LUA_REGISTRYINDEX  -100000-1000  #register table#
+ * ?what is upvalue of CClosure?
+ */
 static TValue *index2addr (lua_State *L, int idx) {
   CallInfo *ci = L->ci;
   if (idx > 0) {
@@ -115,6 +122,10 @@ LUA_API void lua_xmove (lua_State *from, lua_State *to, int n) {
 }
 
 
+/*
+ * lua_CFunction xxx(lua_State *L)
+ * return @old  #old panic function#
+ */
 LUA_API lua_CFunction lua_atpanic (lua_State *L, lua_CFunction panicf) {
   lua_CFunction old;
   lua_lock(L);
@@ -381,7 +392,7 @@ LUA_API const char *lua_tolstring (lua_State *L, int idx, size_t *len) {
   StkId o = index2addr(L, idx);
   if (!ttisstring(o)) {
     lua_lock(L);  /* `luaV_tostring' may create a new string */
-    if (!luaV_tostring(L, o)) {  /* conversion failed? */
+    if (!luaV_tostring(L, o)) {  /* conversion failed? */ /*number to str*/
       if (len != NULL) *len = 0;
       lua_unlock(L);
       return NULL;
@@ -543,6 +554,9 @@ LUA_API const char *lua_pushfstring (lua_State *L, const char *fmt, ...) {
 }
 
 
+/*
+ * if n == 0 then just set L->top  fn #lightwight c func#
+ */
 LUA_API void lua_pushcclosure (lua_State *L, lua_CFunction fn, int n) {
   lua_lock(L);
   if (n == 0) {
@@ -966,6 +980,13 @@ LUA_API int lua_pcallk (lua_State *L, int nargs, int nresults, int errfunc,
   return status;
 }
 
+//struct Zio {
+//  size_t n;			/* bytes still unread */
+//  const char *p;		/* current position in buffer */
+//  lua_Reader reader;		/* reader function */
+//  void* data;			/* additional data */
+//  lua_State *L;			/* Lua state (for reader) */
+//};
 
 LUA_API int lua_load (lua_State *L, lua_Reader reader, void *data,
                       const char *chunkname, const char *mode) {

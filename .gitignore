@@ -3,6 +3,8 @@ doc/
 *.a
 *.so
 *.out
-^lua$
-^luac$
 
+*.tmp
+test/test
+src/lua
+src/luac

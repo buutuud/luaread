@@ -176,6 +176,9 @@ static void preinit_state (lua_State *L, global_State *g) {
   L->hookmask = 0;
   L->basehookcount = 0;
   L->allowhook = 1;
+/*
+#define resethookcount(L)	(L->hookcount = L->basehookcount)
+*/
   resethookcount(L);
   L->openupval = NULL;
   L->nny = 1;
@@ -224,17 +227,34 @@ void luaE_freethread (lua_State *L, lua_State *L1) {
   luaM_free(L, l);
 }
 
+/*
+ *
+ * LG:
+ * {
+ *      struct LX{
+ *          char buff[LUAI_EXTRASPACE];
+ *          lua_State l
+ *      }l;
+ *      global_State g
+ * }
+ *
+ * cast(t,exp)  ((t)(exp))
+ */
 
 LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   int i;
   lua_State *L;
   global_State *g;
-  LG *l = cast(LG *, (*f)(ud, NULL, LUA_TTHREAD, sizeof(LG)));
+  LG *l = cast(LG *, (*f)(ud, NULL, LUA_TTHREAD, sizeof(LG))); /*because @ptr in NULL,so just malloc ,ud just not used in this func */
   if (l == NULL) return NULL;
   L = &l->l.l;
   g = &l->g;
   L->next = NULL;
   L->tt = LUA_TTHREAD;
+/*
+    #define bitmask(b)		(1<<(b))
+    #define bit2mask(b1,b2)		(bitmask(b1) | bitmask(b2))
+*/
   g->currentwhite = bit2mask(WHITE0BIT, FIXEDBIT);
   L->marked = luaC_white(g);
   g->gckind = KGC_NORMAL;

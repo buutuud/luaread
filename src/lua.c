@@ -483,6 +483,7 @@ static int pmain (lua_State *L) {
 
 int main (int argc, char **argv) {
   int status, result;
+  char *ar[2] = {"../src/lua","m.lua"};
   lua_State *L = luaL_newstate();  /* create state */
   if (L == NULL) {
     l_message(argv[0], "cannot create state: not enough memory");
@@ -490,8 +491,10 @@ int main (int argc, char **argv) {
   }
   /* call 'pmain' in protected mode */
   lua_pushcfunction(L, &pmain);
-  lua_pushinteger(L, argc);  /* 1st argument */
-  lua_pushlightuserdata(L, argv); /* 2nd argument */
+  //lua_pushinteger(L, argc);  /* 1st argument */
+  //lua_pushlightuserdata(L, argv); /* 2nd argument */
+  lua_pushinteger(L, 2);  /* 1st argument */
+  lua_pushlightuserdata(L,&ar); /* 2nd argument */
   status = lua_pcall(L, 2, 1, 0);
   result = lua_toboolean(L, -1);  /* get result */
   finalreport(L, status);

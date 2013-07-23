@@ -178,6 +178,10 @@ typedef struct lua_TValue TValue;
 
 #define setnilvalue(obj) settt_(obj, LUA_TNIL)
 
+//#define LUA_TLCL	(LUA_TFUNCTION | (0 << 4))  /* Lua closure */
+//#define LUA_TLCF	(LUA_TFUNCTION | (1 << 4))  /* light C function */
+//#define LUA_TCCL	(LUA_TFUNCTION | (2 << 4))  /* C closure */
+
 #define setfvalue(obj,x) \
   { TValue *io=(obj); val_(io).f=(x); settt_(io, LUA_TLCF); }
 

@@ -147,6 +147,9 @@ typedef struct global_State {
 /*
 ** `per thread' state
 */
+/*
+ * #define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
+ */
 struct lua_State {
   CommonHeader;
   lu_byte status;
