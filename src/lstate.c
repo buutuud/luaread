@@ -157,7 +157,8 @@ static void f_luaopen (lua_State *L, void *ud) {
   /* pre-create memory-error message */
   g->memerrmsg = luaS_newliteral(L, MEMERRMSG);
   luaS_fix(g->memerrmsg);  /* it should never be collected */
-  g->gcrunning = 1;  /* allow gc */
+  g->gcrunning = 0;  /* allow gc */
+  //printf("f_luaopen suucceed");
 }
 
 

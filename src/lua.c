@@ -481,7 +481,7 @@ static int pmain (lua_State *L) {
 }
 
 
-int main (int argc, char **argv) {
+int main2 (int argc, char **argv) {
   int status, result;
   char *ar[2] = {"../src/lua","m.lua"};
   lua_State *L = luaL_newstate();  /* create state */
@@ -502,3 +502,26 @@ int main (int argc, char **argv) {
   return (result && status == LUA_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
+int add(int a,int b)
+{
+	return a+b;
+}
+
+int main() {
+	lua_State *L = luaL_newstate();
+	int result = 2;
+	//luaL_dofile(L,"luac.out");
+	luaL_dostring(L,"a = {}");
+	//lua_getglobal(L,"add");
+	//lua_pushcfunction(L,&add);
+	//lua_pushinteger(L,4);
+	//lua_pushinteger(L,2);
+	//lua_pop(L,1);
+	//lua_pushinteger(L,3);
+    //int lua_pcall (lua_State *L, int nargs, int nresults, int msgh);
+	//lua_pcall(L,2,1,0);
+	//result = lua_tointeger(L,-1);
+	//printf("%d",result);
+	lua_close(L);
+	return 0;
+}
